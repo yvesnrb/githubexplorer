@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from 'react';
-import { Title, Form, Repositories } from './styles';
+import { Title, Form, Repositories, Error } from './styles';
 import api from '../../services/api';
 import appLogoImg from '../../assets/app-logo.svg';
 import arrowImg from '../../assets/arrow.svg';
@@ -16,13 +16,25 @@ interface Repository {
 const Dashboard: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [inputError, setInputError] = useState('');
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
   ): Promise<void> {
     event.preventDefault();
-    const response = await api.get<Repository>(`/repos/${searchQuery}`);
-    setRepositories([...repositories, response.data]);
+
+    if (!searchQuery) {
+      setInputError('Please type a repository name above.');
+    } else {
+      try {
+        const response = await api.get<Repository>(`/repos/${searchQuery}`);
+        setRepositories([...repositories, response.data]);
+        setInputError('');
+        setSearchQuery('');
+      } catch (err) {
+        setInputError('Please type the repo in this format: [owner]/[repo]');
+      }
+    }
   }
 
   return (
@@ -31,15 +43,18 @@ const Dashboard: React.FC = () => {
 
       <Title>Explore GitHub repositories.</Title>
 
-      <Form onSubmit={handleSubmit}>
+      <Form hasError={!inputError} onSubmit={handleSubmit}>
         <input
           onChange={e => setSearchQuery(e.target.value)}
+          value={searchQuery}
           type="text"
           name="search"
           placeholder="Type Here"
         />
         <button type="submit">Search</button>
       </Form>
+
+      {inputError && <Error>{inputError}</Error>}
 
       <Repositories>
         {repositories.map(repository => (
