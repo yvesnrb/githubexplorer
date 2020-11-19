@@ -1,4 +1,5 @@
 import React, { FormEvent, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Title, Form, Repositories, Error } from './styles';
 import api from '../../services/api';
 import appLogoImg from '../../assets/app-logo.svg';
@@ -75,9 +76,9 @@ const Dashboard: React.FC = () => {
 
       <Repositories>
         {repositories.map(repository => (
-          <a
+          <Link
             key={repository.full_name}
-            href={`https://github.com/${repository.full_name}`}
+            to={`repository/${repository.full_name}`}
           >
             <img
               className="avatar-img"
@@ -93,7 +94,7 @@ const Dashboard: React.FC = () => {
               src={arrowImg}
               alt="Right facing arrow"
             />
-          </a>
+          </Link>
         ))}
       </Repositories>
     </>
