@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { Title, Form, Repositories, Error } from './styles';
 import api from '../../services/api';
 import appLogoImg from '../../assets/app-logo.svg';
@@ -14,9 +14,26 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>(
+    getReposFromLocalStorage,
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [inputError, setInputError] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(
+      '@GitHubExplorer:repositories',
+      JSON.stringify(repositories),
+    );
+  }, [repositories]);
+
+  function getReposFromLocalStorage(): Repository[] {
+    const dehydtratedRepos = localStorage.getItem(
+      '@GitHubExplorer:repositories',
+    );
+
+    return JSON.parse(dehydtratedRepos || '[]');
+  }
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
