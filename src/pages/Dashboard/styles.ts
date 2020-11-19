@@ -116,14 +116,17 @@ export const Repositories = styled.div`
       }
     }
 
-    img.right-arrow {
+    svg {
+      color: #c9c9d4;
+      height: 25px;
+      width: 25px;
       transition: transform 0.5s;
     }
 
     &:hover {
       background: ${shade(0.01, '#fff')};
 
-      img.right-arrow {
+      svg {
         transform: translateX(10px);
       }
     }

@@ -1,9 +1,9 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FiChevronRight } from 'react-icons/fi';
 import { Title, Form, Repositories, Error } from './styles';
 import api from '../../services/api';
 import appLogoImg from '../../assets/app-logo.svg';
-import arrowImg from '../../assets/arrow.svg';
 
 interface Repository {
   full_name: string;
@@ -89,11 +89,8 @@ const Dashboard: React.FC = () => {
               <h5>{repository.full_name}</h5>
               <p>{repository.description}</p>
             </div>
-            <img
-              className="right-arrow"
-              src={arrowImg}
-              alt="Right facing arrow"
-            />
+
+            <FiChevronRight />
           </Link>
         ))}
       </Repositories>
