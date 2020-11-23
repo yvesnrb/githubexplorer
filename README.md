@@ -1,4 +1,6 @@
-![GitHub Explorer Logo](/splash-logo.png)
+<p align="center">
+  <img src="/splash-logo.png">
+</p>
 
 # GitHub Explorer
 
